@@ -1,0 +1,1521 @@
+QFrame#linePic
+{
+	min-height: 3px;
+	max-height: 3px;
+	min-width: 180px;
+	background: url(":/va_gui/res/img_title.svg");
+
+}
+
+QFrame#linePic2
+{
+	min-height: 3px;
+	max-height: 3px;
+	min-width: 700px;
+	border-image: url(":/va_gui/res/img_title_small.svg");
+
+}
+
+QWidget#titleWidget
+{
+	min-height: 71px;
+	max-height: 71px;
+	min-width: 700px;
+}
+
+
+QWidget#eventWidget
+{
+	min-width: 220px;
+	max-width: 220px;
+	min-height: 700px;
+}
+
+QWidget#mapWidget
+{
+	min-width: 700px;
+	max-height: 1634px;
+}
+
+QScrollArea#scrollAreaCam
+{
+	min-height: 330px;
+	max-height: 330px;
+	border:none;
+	background-color: transparent;
+}
+
+QWidget#scrollAreaCamWidgetContents
+{
+	background-color: transparent;
+}
+
+
+QLabel#mainTileLabel{
+	color: #BAD9FF;
+	opacity: 0.87;
+	font-family: 微软雅黑;
+	font-size: 22px;
+	width:375px;
+	height:30px;
+	/*font-weight:bold*/
+}
+
+QLabel#mainTitleTimeLabel{
+	opacity: 0.87;
+	font-family: Century Gothic;
+	font-size: 16px;
+	color: #AED2FF;
+	background: #192845;
+	border-radius: 2px;
+	border-radius: 2px;
+	padding-left:6px 6px 6px 6px;
+	min-width:160px;
+	max-width:160px;
+	min-height:24px;
+	max-height:24px;
+}
+
+QLabel#mainTitleLogoLabel {
+	min-width: 135px;
+	max-width: 136px;
+	min-height:32px;
+	max-height:33px;
+	border-image: url(":/va_gui/res/logo.png"); 
+	background-color: transparent; 
+}
+
+QLabel#mainTitleConutLabel{
+	font-family: 微软雅黑;
+	font-size: 14px;
+	color: #B9DAFF;
+}
+
+QLabel#eventico{
+	margin-top:3;
+	margin-right:5;
+	margin-left: 10;
+	min-width: 12px;
+	max-width: 12px;
+	min-height:14px;
+	max-height:14px;
+	border-image:url(":/va_gui/res/ic-events.svg"); 
+	background-color: transparent;
+}
+
+QLabel#labelevent{
+	min-width: 65px;
+	min-height:22px;
+	max-height:22px;
+	font-family: 微软雅黑;
+	font-size: 16px;
+	color: #3D9AEB;
+	background-color: transparent;
+}
+
+QLabel#mapicolabel
+{
+	margin-top:3;
+	margin-right:5;
+	margin-left: 10;
+	min-width: 15px;
+	max-width: 15px;
+	min-height:13px;
+	max-height:13px;
+	border-image:url(":/va_gui/res/ic-data.svg"); 
+	background-color: transparent;
+}
+
+QLabel#maptitlelabel
+{
+	min-width: 33px;
+	min-height:22px;
+	max-height:22px;
+	font-family: 微软雅黑;
+	font-size: 16px;
+	color: #3D9AEB;
+	background-color: transparent;
+}
+
+QPushButton#BtnStatistics{
+	width:21px;
+	height:21px;
+	border-image: url(:/va_gui/res/ic-arrow.svg);}
+}
+
+QTabWidget#eventTabWidget{
+	width:200px;
+}
+
+QTabWidget#eventTabWidget::pane{
+	border-image:url(:/va_gui/res/img_BG.png)
+}
+
+QTabWidget#eventTabWidget::tab-bar{
+     alignment:left;
+}
+
+
+QTabWidget#tabWidgetContainer::pane{
+	border-image:url(:/va_gui/res/img_BG.png)
+}
+
+QTabBar::scroller {
+	width:0
+}
+
+QTabBar::tab
+{
+	width:150px;
+	height:42px;
+	opacity: 0.6;
+	font-family: 微软雅黑;
+	font-size: 12px;
+	color: #93C5FF;
+	background:#FF1B2D50;
+}
+
+QTabBar::tab:hover{
+	
+	background:#6B005DD0;
+}
+
+QTabBar::tab:selected{
+	background:#267AE1;
+	/*box-shadow: 0 0 4px 0 rgba(0,0,0,0.32);*/
+}
+
+QListWidget
+{
+	margin:10px;
+	opacity:0.87;
+	background:transparent;
+	border:none;
+	font-family: 微软雅黑;
+	font-size: 14px;
+	opacity: 0.87;
+	font-size: 14px;
+	color: #FF9ABCE6;
+	outline:0px;
+}
+
+QListWidget::Item:hover,
+QListWidget::Item:selected 
+{
+    color: #FFCEE5FF;
+	background:transparent;
+}
+QListWidget::Item
+{
+	height:30;
+}
+
+QPushButton#btnTotalPlaneNum
+{
+	border-left:2px solid #267AE1;
+	border-right:0px;
+	border-top:0px;
+	border-bottom:0px;
+	background: rgba(24,43,81,0.50);
+	qproperty-icon:url(:/va_gui/res/totalPlaneNum.png);
+	qproperty-iconSize:63px 40px;
+	width:108px;
+	height:40px;
+	opacity: 0.87;
+	font-family: 微软雅黑;
+	font-size: 20px;
+	color: #FFFFFFFF;
+}
+
+QPushButton#btnPlaneUsingNum
+{
+	border-left:2px solid #267AE1;
+	border-right:0px;
+	border-top:0px;
+	border-bottom:0px;
+	background: rgba(24,43,81,0.50);
+	qproperty-icon:url(:/va_gui/res/usingNum.png);
+	qproperty-iconSize:50px 40px;
+	opacity: 0.87;
+	font-family: 微软雅黑;
+	font-size: 20px;
+	color: #FFFFFFFF;
+	width:108px;
+	height:40px;
+}
+QPushButton#btnPlaneValidNum
+{
+	border-left:2px solid #267AE1;
+	border-right:0px;
+	border-top:0px;
+	border-bottom:0px;
+	background: rgba(24,43,81,0.50);
+	qproperty-icon:url(:/va_gui/res/validNum.png);
+	qproperty-iconSize:50px 40px;
+	opacity: 0.87;
+	font-family: 微软雅黑;
+	font-size: 20px;
+	color: #FFFFFFFF;
+	width:108px;
+	height:40px;
+}
+QPushButton#btnCamTotalNum
+{
+	border-left:2px solid #267AE1;
+	border-right:0px;
+	border-top:0px;
+	border-bottom:0px;
+	background: rgba(24,43,81,0.50);
+	qproperty-icon:url(:/va_gui/res/camTotalNum.png);
+	qproperty-iconSize:63px 40px;
+	opacity: 0.87;
+	font-family: 微软雅黑;
+	font-size: 20px;
+	color: #FFFFFFFF;
+	width:108px;
+	height:40px;
+}
+QPushButton#btnOnlineNum
+{
+	border-left:2px solid #267AE1;
+	border-right:0px;
+	border-top:0px;
+	border-bottom:0px;
+	background: rgba(24,43,81,0.50);
+	qproperty-icon:url(:/va_gui/res/onlineNum.png);
+	qproperty-iconSize:50px 40px;
+	opacity: 0.87;
+	font-family: 微软雅黑;
+	font-size: 20px;
+	color: #FFFFFFFF;
+	width:108px;
+	height:40px;
+}
+QPushButton#btnOfflineNum
+{
+	border-left:2px solid #267AE1;
+	border-right:0px;
+	border-top:0px;
+	border-bottom:0px;
+	background: rgba(24,43,81,0.50);
+	qproperty-icon:url(:/va_gui/res/offLineNum.png);
+	qproperty-iconSize:50px 40px;
+	opacity: 0.87;
+	font-family: 微软雅黑;
+	font-size: 20px;
+	color: #FFFFFFFF;
+	width:108px;
+	height:40px;
+}
+QPushButton#btnArrivePlaneNum
+{
+	border-left:2px solid #267AE1;
+	border-right:0px;
+	border-top:0px;
+	border-bottom:0px;
+	background: rgba(24,43,81,0.50);
+	qproperty-icon:url(:/va_gui/res/arrivePlaneNum.png);
+	qproperty-iconSize:75px 40px;
+	opacity: 0.87;
+	font-family: 微软雅黑;
+	font-size: 20px;
+	color: #FFFFFFFF;
+	width:120px;
+	height:40px;
+}
+QPushButton#btnLeavedPlaneNum
+{
+	border-left:2px solid #267AE1;
+	border-right:0px;
+	border-top:0px;
+	border-bottom:0px;
+	background: rgba(24,43,81,0.50);
+	qproperty-icon:url(:/va_gui/res/leavedPlaneNum.png);
+	qproperty-iconSize:76px 40px;
+	opacity: 0.87;
+	font-family: 微软雅黑;
+	font-size: 20px;
+	color: #FFFFFFFF;
+	width:120px;
+	height:40px;
+}
+QPushButton#btnAverageUsingTime
+{
+	border-left:2px solid #267AE1;
+	border-right:0px;
+	border-top:0px;
+	border-bottom:0px;
+	background: rgba(24,43,81,0.50);
+	qproperty-icon:url(:/va_gui/res/averageUsingTime.png);
+	qproperty-iconSize:137px 40px;
+	opacity: 0.87;
+	font-family: 微软雅黑;
+	font-size: 20px;
+	color: #FFFFFFFF;
+	width:187px;
+	height:40px;
+}
+QPushButton#BtnTurnRate
+{
+	border-left:2px solid #267AE1;
+	border-right:0px;
+	border-top:0px;
+	border-bottom:0px;
+	background: rgba(24,43,81,0.50);
+	qproperty-icon:url(:/va_gui/res/turnRate.png);
+	qproperty-iconSize:137px 40px;
+	opacity: 0.87;
+	font-family: 微软雅黑;
+	color: #FFFFFFFF;
+	font-size: 20px;
+	width:200px;
+	height:40px;
+}
+
+QWidget#showMapWidget
+{
+	border-image:url(:/va_gui/res/map.png);/*中央地图*/
+	min-width:400px;
+	min-height:400px;
+}
+
+QLabel#camPlayTitle
+{
+	margin-left:6px;
+	background: rgb(18,21,31);
+	font-family: 微软雅黑;
+	font-size: 16px;
+	color: #3D9AEB;
+	width:114px;
+	min-height:22px;
+	max-height:22px;
+}
+
+QLabel#camPlayDivisionLine1
+{
+	margin-top:6px;
+	background:url(:/va_gui/res/img_01.svg);
+	min-width:35px;
+	min-height:2px;
+	max-width:85px;
+	max-height:2px;
+	border-bottom:2px solid;
+	border-color:#267AE1;
+}
+
+QLabel#camPlayDivisionLine2
+{
+	background:url(:/va_gui/res/img_shape.png);
+	min-width:60px;
+	min-height:8px;
+	max-width:140px;
+	max-height:8px;
+	border-bottom:2px solid;
+	border-color:#267AE1;
+}
+
+QLabel#camPlayDivisionLine3
+{
+	min-height:8px;
+	min-width:10px;
+	max-height:8px;
+	background:transparent;
+	border-bottom:2px solid;
+	border-color:#267AE1;
+	margin-right:2px;
+}
+
+QLabel#camPlayLeftSign
+{
+	background: url(:/va_gui/res/img_02.svg);
+	min-width:19px;
+	min-height:260px;
+	max-width:19px;
+	max-height:260px;
+}
+
+QLabel#camPlayStopInfo
+{
+    margin-left:6px;
+	background: rgb(18,21,31);
+	font-family: 微软雅黑;
+	font-size: 16px;
+	color: #3D9AEB;
+	min-width:100px;
+	min-height:22px;
+	max-width:100px;
+	max-height:22px;
+}
+
+QLabel#camPlayTime
+{
+	font-family: 微软雅黑;
+	min-width:172px;
+	min-height:30px;
+	max-width:172px;
+	max-height:30px;
+	font-size: 12px;
+	color: #9ABCE6;
+	opacity: 0.87;
+}
+
+QFrame#camplayWnd
+{
+	min-width:200px;
+	min-height:231px;
+	max-width:300px;
+	max-height:231px;
+	background:#151F35;
+}
+
+
+
+
+QLabel#nodeGifPic
+{
+	margin:3px;
+	background:url(:/va_gui/res/nodegif.png) no-repeat;/*节点的GIF图*/
+	min-width:600px;
+	min-height:400px;
+	max-width:600px;
+	max-height:400px;
+}
+
+QScrollArea#nodeGifScroll
+{
+	border:none;
+	min-width:380px;
+	max-width:380px;
+}
+
+QWidget#nodeGifScrolContentWidget
+{
+	background: #12151F;
+}
+
+QWidget#nodeGifResWidget
+{
+	min-width:700px;
+	max-width:900px;
+	min-height:350px;
+	max-height:550px;
+}
+
+QWidget#nodeGifCardWidget
+{
+	background:#1D2943;
+}
+
+QLabel#nodeGifLeftSide
+{
+	background:url(:/va_gui/res/node_left.png);
+	max-width:4px;
+	min-width:4px;
+	min-height:300px;
+}
+
+QLabel#nodeGifPlaneNo
+{
+	font-family:Century Gothic;
+	font-size: 18px;
+	color: #B9DAFF;
+	min-width:75px;
+	max-width:150px;
+	min-height:20px;
+	max-height:20px;
+}
+
+QLabel#nodeGifStatusIco
+{
+	min-width:9px;
+	max-width:9px;
+	min-height:9px;
+	max-height:9px;
+	background: #43E367;
+}
+
+QLabel#nodeGifTime
+{
+	min-width:35px;
+	max-width:35px;
+	min-height:15px;
+	max-height:15px;
+	font-family: Century Gothic;
+	font-size: 14px;
+	color: #B9DAFF;
+}
+
+QVBoxLayout#node_label
+{
+    margin: 0px 0 0px 0;
+    alignment: top;
+}
+
+QLabel#nodeGifName
+{
+	min-width:72px;
+	max-width:72px;
+	min-height:17px;
+	max-height:17px;
+	font-family: 微软雅黑;
+	font-size: 12px;
+	color: #B9DAFF;
+}
+
+QLabel#nodeGifWeek
+{
+	min-width:37px;
+	max-width:37px;
+	min-height:17px;
+	max-height:17px;
+	opacity: 0.87;
+	font-family: 微软雅黑;
+	font-size: 12px;
+	color: #B9DAFF;
+}
+
+QLabel#nodeGifDate
+{
+	min-width:72px;
+	max-width:72px;
+	min-height:12px;
+	max-height:12px;
+	opacity: 0.5;
+	font-family: Century Gothic;
+	font-size: 12px;
+	color: #B9DAFF;
+
+}
+
+/**********************************
+整个垂直滚动条区域样式
+QScrollBar:vertical{ }
+滚动条上面和下面区域样式
+QScrollBar::add-page:vertical,QScrollBar::sub-page:vertical{ }
+滑块区域样式
+QScrollBar::handle:vertical{ }
+鼠标滑过滑块样式
+QScrollBar::handle:vertical:hover,QScrollBar::handle:vertical:pressed{ }
+向上箭头样式
+QScrollBar::sub-line:vertical{ }
+向下箭头样式
+QScrollBar::add-line:vertical{ }
+
+****************************************/
+
+
+QScrollBar:vertical {
+    border: none;
+    background: #12151F;
+    width: 6px;
+    margin: 0px 0 0px 0;
+}
+QScrollBar::handle:vertical {/*滑块样式 */
+    background:#1D2943;
+    min-height: 20px;
+    border-radius: 3px;
+    border: none;
+}
+
+QScrollBar::handle:vertical:hover
+{
+	background:#267AE1;
+}
+
+QScrollBar::add-line:vertical {
+    border: 0px solid grey;
+    background: #12151F;
+    height: 0px;
+    subcontrol-position: bottom;
+    subcontrol-origin: margin;
+}
+QScrollBar::sub-line:vertical {
+    border: 0px solid grey;
+    background: #12151F;
+    height: 0px;
+    subcontrol-position: top;
+    subcontrol-origin: margin;
+}
+QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
+    background: none;
+    width: 0px;
+    height: 0px;
+}
+
+
+QScrollBar:horizontal {
+    border: none;
+    background: #12151F;
+    height: 6px;
+    margin: 0px 0 0px 0;
+}
+QScrollBar::handle:horizontal {/*滑块样式 */
+    background:#1D2943;
+    min-width: 20px;
+    border-radius: 3px;
+    border: none;
+}
+
+QScrollBar::handle:horizontal:hover
+{
+	background:#267AE1;
+}
+
+QScrollBar::add-line:horizontal {
+    border: 0px solid grey;
+    background: #12151F;
+    height: 0px;
+    subcontrol-position: bottom;
+    subcontrol-origin: margin;
+}
+QScrollBar::sub-line:horizontal {
+    border: 0px solid grey;
+    background: #12151F;
+    height: 0px;
+    subcontrol-position: top;
+    subcontrol-origin: margin;
+}
+QScrollBar::add-page:horizontal, QScrollBar::sub-page:horizontal {
+    background: none;
+    width: 0px;
+    height: 0px;
+}
+
+QTableWidget#tableWidget {
+	min-width:220px;
+	max-width:220px;
+	border: 1px solid rgb(38, 122, 225);
+	background: rgb(37, 40, 62);/*总背景*/
+	color: white;
+}
+
+
+QTableWidget::item {
+	padding-left: 5px;
+	padding-right: 5px;
+	background: rgb(37, 40, 62);/*数据内容*/
+	border-right: 1px solid rgb(38, 122, 225);
+	border-bottom: 1px solid rgb(38, 122, 225);
+}
+QTableWidget::item:selected {
+        background: rgb(38, 122, 225);
+}
+QTableWidget::item:selected:!active {
+        color: white;
+}
+QTableWidget::indicator {
+        width: 20px;
+        height: 20px;
+}
+
+QHeaderView{
+	background: rgb(24, 43, 81);/*表头背景*/
+}
+QTableView QTableCornerButton::section {
+	color: white;
+	background-color: rgb(24, 43, 81);
+	border:none;
+}
+QHeaderView::section:horizontal {
+	border: 1px solid rgb(45, 45, 45);
+	color: white;
+	background: transparent;
+}
+
+QLabel#label_filter
+{
+    opacity: 0.87;
+    font-family: 微软雅黑;
+    font-size: 12px;
+    color: #72BDFF;
+    letter-spacing: 0.3px;
+}
+
+QComboBox#filter_apron
+{
+	font-family: 微软雅黑;
+	font-size: 12px;
+	min-width:70px;
+	max-width:70px;
+}
+QComboBox#filter_node
+{
+	font-family: 微软雅黑;
+	font-size: 12px;
+	min-width:90px;
+	max-width:90px;
+}
+
+/**********************************************统计窗口配置***************************************************/
+QDialog#statistic
+{
+	background:#182B51;
+}
+
+QWidget#bgPicWidget
+{
+	background:url(:/va_gui/res/img_BG.png);
+}
+
+QLabel#planeNoLabel
+{
+	min-width:35px;
+	max-width:35px;
+	min-height:15px;
+	max-height:15px;
+	font-family: 微软雅黑;
+	font-size: 14px;
+	color: #B9DAFF;
+}
+
+QLabel#planeNodeLabel
+{
+	min-width:35px;
+	max-width:35px;
+	min-height:15px;
+	max-height:15px;
+	font-family: 微软雅黑;
+	font-size: 14px;
+	color: #B9DAFF;
+}
+
+QGroupBox
+{
+	font-family: 微软雅黑;
+	font-size: 16px;
+	color: #B9DAFF;
+	border: 2px solid #267AE1;
+	border-radius: 5px;
+	margin-top: 10px; /* leave space at the top for the title */
+}
+
+QGroupBox#QueryGroupBox
+{
+	min-height: 250px;
+	max-height: 250px;
+}
+
+QGroupBox#EventGroupBox
+{
+	min-width: 1150px;
+}
+
+
+QGroupBox:title
+{
+	subcontrol-origin: margin;
+	left: 20px;
+}
+
+
+QLabel#beginTimeLabel
+{
+	font-family: 微软雅黑;
+	font-size: 14px;
+	color: #B9DAFF;
+}
+
+QLabel#endTimeLabel
+{
+	font-family: 微软雅黑;
+	font-size: 14px;
+	color: #B9DAFF;
+}
+
+QCheckBox#diffDayNightCheckbox
+{
+	min-height:15px;
+	max-height:15px;
+	font-family: 微软雅黑;
+	font-size: 14px;
+	color: #B9DAFF;
+}
+
+QLabel#diffDayNightLabel
+{
+	min-height:15px;
+	max-height:15px;
+	font-family: 微软雅黑;
+	font-size: 14px;
+	color: #B9DAFF;
+}
+
+QLabel#dayTimeLabel
+{
+	min-width:35px;
+	max-width:35px;
+	min-height:15px;
+	max-height:15px;
+	font-family: 微软雅黑;
+	font-size: 14px;
+	color: #B9DAFF;
+}
+
+QLabel#nightTimeLabel
+{
+	min-width:35px;
+	max-width:35px;
+	min-height:15px;
+	max-height:15px;
+	font-family: 微软雅黑;
+	font-size: 14px;
+	color: #B9DAFF;
+}
+
+
+
+QComboBox#planeNoCombox
+{
+	font-family: 微软雅黑;
+	font-size: 12px;
+	/*background: #42A1ED;*/
+}
+
+QComboBox#planeNodeCombox
+{
+	font-family: 微软雅黑;
+	font-size: 12px;
+}
+
+QTableWidget#tableWidget2 {
+	border: 1px solid rgb(38, 122, 225);
+	background: rgb(37, 40, 62);/*总背景*/
+	color: white;
+}
+
+QTableWidget#tableWidget1 {
+	min-width:600px;
+	max-width:700px;
+	border: 1px solid rgb(38, 122, 225);
+	background: rgb(37, 40, 62);/*总背景*/
+	color: white;
+}
+
+QTableWidget::item {
+	padding-left: 5px;
+	padding-right: 5px;
+	background: rgb(37, 40, 62);/*数据内容*/
+	border-right: 1px solid rgb(38, 122, 225);
+	border-bottom: 1px solid rgb(38, 122, 225);
+}
+QTableWidget::item:selected {
+        background: rgb(38, 122, 225);
+}
+QTableWidget::item:selected:!active {
+        color: white;
+}
+QTableWidget::indicator {
+        width: 20px;
+        height: 20px;
+}
+
+
+QHeaderView{
+	background: rgb(24, 43, 81);/*表头背景*/
+}
+QTableView QTableCornerButton::section {
+	color: white;
+	background-color: rgb(24, 43, 81);
+	border:none;
+}
+QHeaderView::section:horizontal {
+	border: 1px solid rgb(45, 45, 45);
+	color: white;
+	background: transparent;
+
+}
+
+QHeaderView::section:vertical {
+	border:none;
+	color: white;
+	background: transparent;
+	width:20px;
+}
+
+QHeaderView::section:horizontal:pressed {
+	background: rgb(0, 180, 255);
+}
+
+
+/**********************************************登录窗口配置***************************************************/
+QWidget#Login
+{
+    background:#182B51;
+}
+
+QPushButton#pushButton_login
+{
+	border-radius:5px;
+	max-width:100px;
+	max-height:25px;
+	font-family: 微软雅黑;
+	font-size: 16px;
+	color: #FFFFFF;
+	background-color:#42A1ED;
+}
+
+QPushButton:pressed#pushButton_login
+{
+    background-color: light gray;
+    padding-left:3px;
+    padding-top:3px;
+}
+
+
+
+/**********************************************验证窗口配置***************************************************/
+
+QDialog#verify
+{
+    min-width:1920px;
+	max-width:1920px;
+	min-height:1000px;
+	max-height:1000px;
+	background:#182B51;
+}
+
+QWidget#bgPicWidget2
+{
+	background:url(:/va_gui/res/img_BG.png);
+}
+
+QLabel#verifyPlaneNoLabel
+{
+	min-width:35px;
+	max-width:35px;
+	min-height:15px;
+	max-height:15px;
+	font-family: 微软雅黑;
+	font-size: 14px;
+	color: #B9DAFF;
+}
+
+QLabel#verifyNodeLabel
+{
+	min-width:35px;
+	max-width:35px;
+	min-height:15px;
+	max-height:15px;
+	font-family: 微软雅黑;
+	font-size: 14px;
+	color: #B9DAFF;
+}
+
+QLabel#verifyBeginDateLabel
+{
+	min-width:70px;
+	max-width:70px;
+	min-height:15px;
+	max-height:15px;
+	font-family: 微软雅黑;
+	font-size: 14px;
+	color: #B9DAFF;
+}
+
+QLabel#verifyEndDateLabel
+{
+	min-width:70px;
+	max-width:70px;
+	min-height:15px;
+	max-height:15px;
+	font-family: 微软雅黑;
+	font-size: 14px;
+	color: #B9DAFF;
+}
+
+QLabel#verifyStatusLabel
+{
+	min-width:70px;
+	max-width:70px;
+	min-height:15px;
+	max-height:15px;
+	font-family: 微软雅黑;
+	font-size: 14px;
+	color: #B9DAFF;
+}
+
+QTableWidget#verifytableWidget
+{
+	min-width:900px;
+	max-width:1100px;
+    min-height: 635px;
+	border: 1px solid rgb(38, 122, 225);
+	background: rgb(37, 40, 62);/*总背景*/
+	color: white;
+}
+
+QPushButton#btnQuery
+{
+	border-radius:5px;
+	min-width:100px;
+	max-width:100px;
+	min-height: 25px;
+	max-height:25px;
+	font-family: 微软雅黑;
+	font-size: 16px;
+	color: #FFFFFF;
+	background-color:#42A1ED;
+}
+
+QPushButton:pressed#btnQuery
+{
+    background-color: light gray;
+    padding-left:3px;
+    padding-top:3px;
+}
+
+QPushButton:disabled#btnQuery
+{
+    background-color: gray;
+    text-decoration:line-through;
+}
+
+
+QPushButton#btnReset
+{
+	border-radius:5px;
+	min-width:100px;
+	max-width:100px;
+	min-height: 25px;
+	max-height:25px;
+	font-family: 微软雅黑;
+	font-size: 16px;
+	color: #FFFFFF;
+	background-color:#42A1ED;
+}
+
+QPushButton:pressed#btnReset
+{
+    background-color: light gray;
+    padding-left:3px;
+    padding-top:3px;
+}
+
+QPushButton:disabled#btnReset
+{
+    background-color: gray;
+    text-decoration:line-through;
+}
+
+
+QPushButton#btnUpdate
+{
+	border-radius:5px;
+	min-width:100px;
+	max-width:100px;
+	min-height: 25px;
+	max-height:25px;
+	font-family: 微软雅黑;
+	font-size: 16px;
+	color: #FFFFFF;
+	background-color:#42A1ED;
+}
+
+QPushButton:pressed#btnUpdate
+{
+    background-color: light gray;
+    padding-left:3px;
+    padding-top:3px;
+}
+
+QPushButton:checked#btnUpdate
+{
+    background-color: green;
+
+}
+
+
+QPushButton#btnOut
+{
+	border-radius:5px;
+	max-width:100px;
+	max-height:25px;
+	font-family: 微软雅黑;
+	font-size: 16px;
+	color: #FFFFFF;
+	background-color:#42A1ED;
+}
+
+QPushButton:pressed#btnOut
+{
+    background-color: light gray;
+    padding-left:3px;
+    padding-top:3px;
+}
+
+
+QComboBox
+{
+	font-family: 微软雅黑;
+	font-size: 12px;
+	min-width:120px;
+	max-width:120px;
+	border: 1px solid gray;
+	border-radius: 3px;
+	color: white;
+	background-color: #4e72b8;
+	padding: 1px 18px 1px 3px;
+}
+
+QComboBox QAbstractItemView {
+    outline: 0px solid gray;   /* 选定项的虚框 */
+    border: 1px solid yellow;   /* 整个下拉窗体的边框 */
+    color: white;
+    background-color: #4e72b8;   /* 整个下拉窗体的背景色 */
+    selection-background-color: lightgreen;   /* 整个下拉窗体被选中项的背景色 */
+}
+
+
+QComboBox:editable{
+    background: white
+}
+
+
+QComboBox:on { /* 弹出窗口打开时移动文本*/
+    padding-top: 3px;
+    padding-left: 4px;
+}
+
+
+
+QComboBox::down-arrow:on { /* 弹出窗口打开时移动箭头 */
+    top: 1px;
+    left: 1px;
+}
+
+QComboBox:disabled
+{
+    background-color: gray;
+    text-decoration:line-through;
+}
+
+QComboBox#verifyNodeCombox
+{
+	font-family: 微软雅黑;
+	font-size: 12px;
+	min-width:90px;
+	max-width:90px;
+}
+
+QComboBox#verifyStatusCombox
+{
+	font-family: 微软雅黑;
+	font-size: 12px;
+	min-width:90px;
+	max-width:90px;
+	border: 1px solid gray;
+	border-radius: 3px;
+	padding: 1px 18px 1px 3px
+}
+
+
+QDateEdit
+{
+	font-family: 微软雅黑;
+	font-size: 12px;
+	min-width:120px;
+	max-width:120px;
+	border: 1px solid gray;
+	border-radius: 3px;
+	color: white;
+	background-color: #4e72b8;
+	padding: 1px 18px 1px 3px
+}
+
+QDateEdit:disabled
+{
+    background-color: gray;
+    text-decoration:line-through;
+}
+
+QTableWidget#tableByNode
+{
+	border: 1px solid rgb(38, 122, 225);
+	background: rgb(37, 40, 62);/*总背景*/
+	color: white;
+}
+
+QTableWidget#tableByTime
+{
+	border: 1px solid rgb(38, 122, 225);
+	background: rgb(37, 40, 62);/*总背景*/
+	color: white;
+}
+
+QTableWidget#tableByDate
+{
+	border: 1px solid rgb(38, 122, 225);
+	background: rgb(37, 40, 62);/*总背景*/
+	color: white;
+}
+
+QTableWidget#tableByPosition
+{
+	border: 1px solid rgb(38, 122, 225);
+	background: rgb(37, 40, 62);/*总背景*/
+	color: white;
+}
+
+
+
+
+
+/********************************************************/
+
+
+QLabel#lblTotalPage
+{
+    text-align: center;
+	min-width:70px;
+	max-width:70px;
+	min-height:15px;
+	max-height:15px;
+	font-family: 微软雅黑;
+	font-size: 14px;
+	color: #B9DAFF;
+}
+
+
+
+QLabel#lblPageNum
+{
+    text-align: center;
+	max-width:35px;
+	min-height:15px;
+	max-height:15px;
+	font-family: 微软雅黑;
+	font-size: 14px;
+	color: #B9DAFF;
+}
+
+QLabel
+{
+    text-align: center;
+	min-width:70px;
+	max-width:70px;
+	min-height:15px;
+	max-height:15px;
+	font-family: 微软雅黑;
+	font-size: 14px;
+	color: #B9DAFF;
+}
+
+QLabel#label
+{
+	min-width:320px;
+	max-width:320px;
+	min-height:80px;
+	max-height:80px;
+}
+
+
+
+
+
+
+QPushButton#btnHomePage
+{
+	border-radius:5px;
+	min-width:100px;
+	max-width:100px;
+	min-height: 25px;
+	max-height:25px;
+	font-family: 微软雅黑;
+	font-size: 16px;
+	color: #FFFFFF;
+	background-color:#42A1ED;
+}
+
+QPushButton:pressed#btnHomePage
+{
+    background-color: light gray;
+    padding-left:3px;
+    padding-top:3px;
+}
+
+QPushButton:disabled#btnHomePage
+{
+    background-color: gray;
+    text-decoration:line-through;
+}
+
+
+QPushButton#btnBeforePage
+{
+	border-radius:5px;
+	min-width:100px;
+	max-width:100px;
+	min-height: 25px;
+	max-height:25px;
+	font-family: 微软雅黑;
+	font-size: 16px;
+	color: #FFFFFF;
+	background-color:#42A1ED;
+}
+
+QPushButton:pressed#btnBeforePage
+{
+    background-color: light gray;
+    padding-left:3px;F
+    padding-top:3px;
+}
+
+QPushButton:disabled#btnBeforePage
+{
+    background-color: gray;
+    text-decoration:line-through;
+}
+
+QPushButton#btnAfterPage
+{
+	border-radius:5px;
+	min-width:100px;
+	max-width:100px;
+	min-height: 25px;
+	max-height:25px;
+	font-family: 微软雅黑;
+	font-size: 16px;
+	color: #FFFFFF;
+	background-color:#42A1ED;
+}
+
+QPushButton:pressed#btnAfterPage
+{
+    background-color: light gray;
+    padding-left:3px;
+    padding-top:3px;
+}
+
+QPushButton:disabled#btnAfterPage
+{
+    background-color: gray;
+    text-decoration:line-through;
+}
+
+QPushButton#btnLastPage
+{
+	border-radius:5px;
+	min-width:100px;
+	max-width:100px;
+	min-height: 25px;
+	max-height:25px;
+	font-family: 微软雅黑;
+	font-size: 16px;
+	color: #FFFFFF;
+	background-color:#42A1ED;
+}
+
+QPushButton:pressed#btnLastPage
+{
+    background-color: light gray;
+    padding-left:3px;
+    padding-top:3px;
+}
+
+QPushButton:disabled#btnLastPage
+{
+    background-color: gray;
+    text-decoration:line-through;
+}
+
+QPushButton#btnMakeSure
+{
+	border-radius:5px;
+	max-width:100px;
+	max-height:25px;
+	font-family: 微软雅黑;
+	font-size: 16px;
+	color: #FFFFFF;
+	background-color:#42A1ED;
+}
+
+QPushButton:pressed#btnMakeSure
+{
+    background-color: light gray;
+    padding-left:3px;
+    padding-top:3px;
+}
+
+QPushButton#btnStatistics
+{
+	border-radius:5px;
+	max-width:100px;
+	max-height:25px;
+	font-family: 微软雅黑;
+	font-size: 16px;
+	color: #FFFFFF;
+	background-color:#42A1ED;
+}
+
+QPushButton:pressed#btnStatistics
+{
+    background-color: light gray;
+    padding-left:3px;
+    padding-top:3px;
+}
+
+QPushButton#btnSave
+{
+	border-radius:5px;
+	max-width:100px;
+	max-height:40px;
+	border-color: gray;
+    border-width: 2px;
+	min-width: 75px;
+	min-height:35px;
+	font-family: 微软雅黑;
+	font-size: 16px;
+	color: #FFFFFF;
+	background-color:#1d953f;
+}
+
+QPushButton:pressed#btnSave
+{
+    background-color: light gray;
+    padding-left:3px;
+    padding-top:3px;
+}
+
+QPushButton#btnCancel
+{
+	border-radius:5px;
+	border-color: gray;
+    border-width: 2px;
+	max-width:100px;
+	min-width: 75px;
+	min-height:35px;
+	max-height:40px;
+	font-family: 微软雅黑;
+	font-size: 16px;
+	color: #FFFFFF;
+	background-color:#9d9087;
+}
+
+QPushButton:pressed#btnCancel
+{
+    background-color: light gray;
+    padding-left:3px;
+    padding-top:3px;
+}
+
+
+
+QLineEdit#inputGoto
+{
+    border-radius:5px;
+	max-width:40px;
+	max-height:25px;
+	font-size: 16px;
+}
+
+
+QDialog#statisticsTable
+{
+	background:#182B51;
+}
+
+QLabel#lblmessage
+{
+    font-family: 微软雅黑;
+	font-size: 16px;
+}

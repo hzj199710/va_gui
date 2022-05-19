@@ -1,0 +1,9 @@
+.idea
+__pycache__
+.xlsx
+
+build/
+dist/
+
+*.7z
+*.spec

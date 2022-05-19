@@ -475,10 +475,8 @@ QLabel#nodeGifPic
 {
 	margin:3px;
 	background:url(:/va_gui/res/nodegif.png) no-repeat;/*节点的GIF图*/
-	min-width:600px;
-	min-height:400px;
-	max-width:600px;
-	max-height:400px;
+	min-width:300px;
+	min-height:200px;
 }
 
 QScrollArea#nodeGifScroll
@@ -495,10 +493,10 @@ QWidget#nodeGifScrolContentWidget
 
 QWidget#nodeGifResWidget
 {
-	min-width:700px;
-	max-width:900px;
-	min-height:350px;
-	max-height:550px;
+	min-width:380px;
+	max-width:380px;
+	min-height:210px;
+	max-height:210px;
 }
 
 QWidget#nodeGifCardWidget
@@ -519,8 +517,8 @@ QLabel#nodeGifPlaneNo
 	font-family:Century Gothic;
 	font-size: 18px;
 	color: #B9DAFF;
-	min-width:75px;
-	max-width:150px;
+	min-width:32px;
+	max-width:32px;
 	min-height:20px;
 	max-height:20px;
 }
@@ -789,15 +787,14 @@ QGroupBox
 	margin-top: 10px; /* leave space at the top for the title */
 }
 
-QGroupBox#QueryGroupBox
+QGroupBox#verifyGroupBox
 {
-	min-height: 250px;
-	max-height: 250px;
+	min-height: 350px;
 }
 
-QGroupBox#EventGroupBox
+QGroupBox#groupBox
 {
-	min-width: 1150px;
+	min-width: 630px;
 }
 
 
@@ -862,7 +859,27 @@ QLabel#nightTimeLabel
 	color: #B9DAFF;
 }
 
+QPushButton#queryBtn
+{
+	border-radius:5px;
+	max-width:100px;
+	max-height:25px;
+	font-family: 微软雅黑;
+	font-size: 16px;
+	color: #FFFFFF;
+	background-color:#42A1ED;
+}
 
+QPushButton#genReportBtn
+{
+	border-radius:5px;
+	max-width:100px;
+	max-height:25px;
+	font-family: 微软雅黑;
+	font-size: 16px;
+	color: #FFFFFF;
+	background-color:#42A1ED;
+}
 
 QComboBox#planeNoCombox
 {
@@ -967,10 +984,8 @@ QPushButton:pressed#pushButton_login
 
 QDialog#verify
 {
-    min-width:1920px;
-	max-width:1920px;
-	min-height:1000px;
-	max-height:1000px;
+    width: 1000;
+    height: 800;
 	background:#182B51;
 }
 
@@ -1036,20 +1051,18 @@ QLabel#verifyStatusLabel
 
 QTableWidget#verifytableWidget
 {
-	min-width:900px;
-	max-width:1100px;
+	min-width:600px;
+	max-width:800px;
     min-height: 635px;
 	border: 1px solid rgb(38, 122, 225);
 	background: rgb(37, 40, 62);/*总背景*/
 	color: white;
 }
 
-QPushButton#btnQuery
+QPushButton#btnVerifyQuery
 {
 	border-radius:5px;
-	min-width:100px;
 	max-width:100px;
-	min-height: 25px;
 	max-height:25px;
 	font-family: 微软雅黑;
 	font-size: 16px;
@@ -1057,72 +1070,14 @@ QPushButton#btnQuery
 	background-color:#42A1ED;
 }
 
-QPushButton:pressed#btnQuery
+QPushButton:pressed#btnVerifyQuery
 {
     background-color: light gray;
     padding-left:3px;
     padding-top:3px;
 }
 
-QPushButton:disabled#btnQuery
-{
-    background-color: gray;
-    text-decoration:line-through;
-}
 
-
-QPushButton#btnReset
-{
-	border-radius:5px;
-	min-width:100px;
-	max-width:100px;
-	min-height: 25px;
-	max-height:25px;
-	font-family: 微软雅黑;
-	font-size: 16px;
-	color: #FFFFFF;
-	background-color:#42A1ED;
-}
-
-QPushButton:pressed#btnReset
-{
-    background-color: light gray;
-    padding-left:3px;
-    padding-top:3px;
-}
-
-QPushButton:disabled#btnReset
-{
-    background-color: gray;
-    text-decoration:line-through;
-}
-
-
-QPushButton#btnUpdate
-{
-	border-radius:5px;
-	min-width:100px;
-	max-width:100px;
-	min-height: 25px;
-	max-height:25px;
-	font-family: 微软雅黑;
-	font-size: 16px;
-	color: #FFFFFF;
-	background-color:#42A1ED;
-}
-
-QPushButton:pressed#btnUpdate
-{
-    background-color: light gray;
-    padding-left:3px;
-    padding-top:3px;
-}
-
-QPushButton:checked#btnUpdate
-{
-    background-color: green;
-
-}
 
 
 QPushButton#btnOut
@@ -1144,27 +1099,16 @@ QPushButton:pressed#btnOut
 }
 
 
-QComboBox
+QComboBox#verifyPlaneNoCombox
 {
 	font-family: 微软雅黑;
 	font-size: 12px;
-	min-width:120px;
-	max-width:120px;
+	min-width:90px;
+	max-width:90px;
 	border: 1px solid gray;
 	border-radius: 3px;
-	color: white;
-	background-color: #4e72b8;
-	padding: 1px 18px 1px 3px;
+	padding: 1px 18px 1px 3px
 }
-
-QComboBox QAbstractItemView {
-    outline: 0px solid gray;   /* 选定项的虚框 */
-    border: 1px solid yellow;   /* 整个下拉窗体的边框 */
-    color: white;
-    background-color: #4e72b8;   /* 整个下拉窗体的背景色 */
-    selection-background-color: lightgreen;   /* 整个下拉窗体被选中项的背景色 */
-}
-
 
 QComboBox:editable{
     background: white
@@ -1183,12 +1127,6 @@ QComboBox::down-arrow:on { /* 弹出窗口打开时移动箭头 */
     left: 1px;
 }
 
-QComboBox:disabled
-{
-    background-color: gray;
-    text-decoration:line-through;
-}
-
 QComboBox#verifyNodeCombox
 {
 	font-family: 微软雅黑;
@@ -1203,29 +1141,22 @@ QComboBox#verifyStatusCombox
 	font-size: 12px;
 	min-width:90px;
 	max-width:90px;
-	border: 1px solid gray;
-	border-radius: 3px;
-	padding: 1px 18px 1px 3px
 }
 
-
-QDateEdit
+QDateEdit#verifyBegindateEdit
 {
 	font-family: 微软雅黑;
 	font-size: 12px;
-	min-width:120px;
-	max-width:120px;
-	border: 1px solid gray;
-	border-radius: 3px;
-	color: white;
-	background-color: #4e72b8;
-	padding: 1px 18px 1px 3px
+	min-width:90px;
+	max-width:90px;
 }
 
-QDateEdit:disabled
+QDateEdit#verifyEnddateEdit
 {
-    background-color: gray;
-    text-decoration:line-through;
+	font-family: 微软雅黑;
+	font-size: 12px;
+	min-width:90px;
+	max-width:90px;
 }
 
 QTableWidget#tableByNode
@@ -1288,37 +1219,13 @@ QLabel#lblPageNum
 	color: #B9DAFF;
 }
 
-QLabel
-{
-    text-align: center;
-	min-width:70px;
-	max-width:70px;
-	min-height:15px;
-	max-height:15px;
-	font-family: 微软雅黑;
-	font-size: 14px;
-	color: #B9DAFF;
-}
-
-QLabel#label
-{
-	min-width:320px;
-	max-width:320px;
-	min-height:80px;
-	max-height:80px;
-}
-
-
-
 
 
 
 QPushButton#btnHomePage
 {
 	border-radius:5px;
-	min-width:100px;
 	max-width:100px;
-	min-height: 25px;
 	max-height:25px;
 	font-family: 微软雅黑;
 	font-size: 16px;
@@ -1333,19 +1240,11 @@ QPushButton:pressed#btnHomePage
     padding-top:3px;
 }
 
-QPushButton:disabled#btnHomePage
-{
-    background-color: gray;
-    text-decoration:line-through;
-}
-
 
 QPushButton#btnBeforePage
 {
 	border-radius:5px;
-	min-width:100px;
 	max-width:100px;
-	min-height: 25px;
 	max-height:25px;
 	font-family: 微软雅黑;
 	font-size: 16px;
@@ -1360,18 +1259,10 @@ QPushButton:pressed#btnBeforePage
     padding-top:3px;
 }
 
-QPushButton:disabled#btnBeforePage
-{
-    background-color: gray;
-    text-decoration:line-through;
-}
-
 QPushButton#btnAfterPage
 {
 	border-radius:5px;
-	min-width:100px;
 	max-width:100px;
-	min-height: 25px;
 	max-height:25px;
 	font-family: 微软雅黑;
 	font-size: 16px;
@@ -1386,18 +1277,11 @@ QPushButton:pressed#btnAfterPage
     padding-top:3px;
 }
 
-QPushButton:disabled#btnAfterPage
-{
-    background-color: gray;
-    text-decoration:line-through;
-}
 
 QPushButton#btnLastPage
 {
 	border-radius:5px;
-	min-width:100px;
 	max-width:100px;
-	min-height: 25px;
 	max-height:25px;
 	font-family: 微软雅黑;
 	font-size: 16px;
@@ -1410,12 +1294,6 @@ QPushButton:pressed#btnLastPage
     background-color: light gray;
     padding-left:3px;
     padding-top:3px;
-}
-
-QPushButton:disabled#btnLastPage
-{
-    background-color: gray;
-    text-decoration:line-through;
 }
 
 QPushButton#btnMakeSure

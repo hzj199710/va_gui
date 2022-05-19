@@ -11,23 +11,22 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 import my_gif
 import json
 import datetime
+
 class Ui_nodeGifResWidget(object):
     def __init__(self,node_info):
         self.snap_info=node_info
         self.apron=node_info[1]
         self.node=node_info[2]
         self.node_chinese=node_info[3]
-        # date0=datetime.datetime.combine(node_info[4],datetime.time.min)
-        # date0+=node_info[5]
-        date0 = node_info[4]
+        date0=datetime.datetime.combine(node_info[4],datetime.time.min)
+        date0+=node_info[5]
         self.date=date0.strftime('%Y/%m/%d')
         str_tmp="日一二三四五六"
         self.week = "星期"+str_tmp[int(date0.strftime('%w'))]
         self.time=date0.strftime('%H:%M:%S')
         fp  = open('./static/setting/config.json', 'r', encoding='utf8')
         config = json.load(fp)
-        self.gif_path = 'Z:/'+node_info[5]
-        print(self.gif_path)
+        self.gif_path = config["snap_root_path"]+node_info[6]
 
     def setupUi(self, nodeGifResWidget):
         nodeGifResWidget.setObjectName("nodeGifResWidget")

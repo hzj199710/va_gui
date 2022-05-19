@@ -1,13 +1,10 @@
 {
-  "snap_root_path": "\\\\192.168.200.68\\e\\genedGIF",
-  "remote_user": "tiger",
-  "remote_passwd": "hfe1213!",
+  "snap_root_path": "E:\\genedGIF\\",
     "mysql": {
       "ip": "localhost",
       "port": 3306,
       "user": "root",
       "passwd": "123456",
-      "db": "test",
-      "view": "event_view"
+      "db": "va"
     }
 }

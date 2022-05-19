@@ -2,8 +2,8 @@
 __pycache__
 .xlsx
 
+*.7z
+
 build/
 dist/
-
-*.7z
-*.spec
+mysql/

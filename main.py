@@ -17,28 +17,14 @@ import resultnode
 import pandas as pd
 import numpy as np
 from astral import LocationInfo
-import os
 
-page_rows = 25
+CORRECT_F = 0
+ERROR_F = 1
+LOST_F = 2
+REPEAT_F = 3
+UNEXPECT_F = 4
+UNCHECKED_F = 5
 
-level_dir = {
-    0: '低',
-    1: '中',
-    2: '高'
-}
-
-type_dir = {
-    0: '反光背心',
-    1: '人员密度',
-    2: '区域入侵'
-}
-
-status_dir = {
-    0: '未处理',
-    1: '已处理',
-    2: '误报',
-    3: '重复上报'
-}
 
 # 判断(南宁)该时间（dateTime）下是否是白天
 def isDay(dateTime):
@@ -58,50 +44,39 @@ def isDay(dateTime):
 
 import time
 # 查询数据
-def mysql_get_snap(conn, view, source=None, type=None, level=None, data_start=None, data_end=None, status=None):
+def mysql_get_snap(conn, apron=None, nodename=None, data_start=None, data_end=None, checked=None):
     sql_where = ''
-    if source != None:
-        sql_where += 'camera_name="%s" ' % source
+    if apron != None:
+        sql_where += 'apron="%s" ' % apron
 
-    if type != None:
+    if nodename != None:
         if sql_where != '':
             sql_where += 'AND '
-        sql_where += 'type="%s" ' % type
-
-    if level != None:
-        if sql_where != '':
-            sql_where += 'AND '
-        sql_where += 'level="%s" ' % level
+        sql_where += 'node_chinese="%s" ' % nodename
 
     if data_start != None:
         if sql_where != '':
             sql_where += 'AND '
-        sql_where += 'timestamp >= "%s" ' % (data_start.strftime("%Y-%m-%d"))
+        sql_where += 'date >= "%s" ' % (data_start.strftime("%Y-%m-%d"))
 
     if data_end != None:
         if sql_where != '':
             sql_where += 'AND '
-        sql_where += 'timestamp <= "%s" ' % (data_end.strftime("%Y-%m-%d"))
+        sql_where += 'date <= "%s" ' % (data_end.strftime("%Y-%m-%d"))
 
-    if status != None:
+    if checked != 0:
         if sql_where != '':
             sql_where += 'AND '
-        if status == 0:
-            sql_where += ' (status is null or status = 0) '
+        if checked == 6:
+            sql_where += ' (checked is null or checked = 5) '
         else:
-            sql_where += 'status="%s" ' % status
-
+            sql_where += ' checked = %s'%(checked-1)
     if sql_where != '':
         sql_where = 'where ' + sql_where
 
-    sql = 'SELECT * FROM %s %s ORDER BY `timestamp` ASC, `id` ASC;' % (view, sql_where)
-    print(sql)
-    result = pd.read_sql_query(sql, conn)
+    sql = 'SELECT * FROM node_view %s ORDER BY `datetime` ASC, `id` ASC;' % (sql_where)
+    result = pd.read_sql(sql, conn)
     return result
-
-
-def get_source(conn):
-    pass
 
 
 def get_chineseNode(conn):
@@ -109,17 +84,17 @@ def get_chineseNode(conn):
     result = pd.read_sql(sql, conn)
     return result
 
-def get_position(conn, view):
-    sql = 'SELECT distinct apron FROM %s;'%(view)
+def get_position(conn):
+    sql = 'SELECT distinct apron FROM node_event;'
     result = pd.read_sql(sql, conn)
     return result
 
 
 # 更新数据
-def mysql_update_data(conn, view, data_list):
+def mysql_update_data(conn, data_list):
     cursor = conn.cursor()
     for data in data_list:
-        sql = 'UPDATE %s SET status=%s WHERE id=%s' % (view, data[1], data[0])
+        sql = 'UPDATE node_event SET checked=%s WHERE id=%s' % (data[1], data[0])
         cursor.execute(sql)
     conn.commit()
 
@@ -235,13 +210,10 @@ class Thread_1(QThread):
 
 
 class MyVerify(QDialog, Ui_verify):
-    def __init__(self, parent=None, conn=None, view=None):
+    def __init__(self, parent=None, conn=None):
         QDialog.__init__(self, parent=parent)
         self.result = None
         self.conn = conn
-        self.view = view
-        self.is_update = False
-        self.update_id_flag = None
         self.setupUi(self)
 
         # 设置热键
@@ -256,33 +228,44 @@ class MyVerify(QDialog, Ui_verify):
         # 界面设置
         self.setWindowTitle('机位分析核验程序')
         # self.setWindowFlags(QtCore.Qt.FramelessWindowHint)
-        self.setWindowFlags(QtCore.Qt.WindowMinimizeButtonHint | QtCore.Qt.WindowCloseButtonHint | QtCore.Qt.WindowMaximizeButtonHint)
+        self.setWindowFlags(QtCore.Qt.WindowMinimizeButtonHint | QtCore.Qt.WindowCloseButtonHint)
 
+        self.btnVerifyQuery.clicked.connect(self.on_query)
+        self.btnOut.clicked.connect(self.save_data)
 
         # 设置table只能行选择，且不能编辑，设置列宽
         self.verifytableWidget.setSelectionMode(QAbstractItemView.SingleSelection)
         self.verifytableWidget.setEditTriggers(QTableView.NoEditTriggers)
         self.verifytableWidget.setSelectionBehavior(QAbstractItemView.SelectRows)
         self.verifytableWidget.verticalHeader().setVisible(False)
-        self.verifytableWidget.setColumnWidth(0, 100)
-        self.verifytableWidget.setColumnWidth(1, 140)
+        self.verifytableWidget.setColumnWidth(0, 60)
+        self.verifytableWidget.setColumnWidth(1, 40)
         self.verifytableWidget.setColumnWidth(2, 150)
-        self.verifytableWidget.setColumnWidth(3, 140)
-        self.verifytableWidget.setColumnWidth(4, 190)
-        self.verifytableWidget.setColumnWidth(5, 140)
-        self.verifytableWidget.setColumnWidth(6, 110)
-        self.verifytableWidget.setColumnWidth(7, 130)
+        self.verifytableWidget.setColumnWidth(3, 80)
+        self.verifytableWidget.setColumnWidth(4, 160)
+        self.verifytableWidget.setColumnWidth(5, 100)
         self.verifytableWidget.clicked.connect(self.table_change)
 
-        # 设置资源选择器
-        item = self.verifySourceCombox
+        # 设置节点选择器
+        item = self.verifyNodeCombox
         _translate = QtCore.QCoreApplication.translate
-        source_name = np.array(get_source(self.conn)).tolist()
+        node_name = np.array(get_chineseNode(self.conn)).tolist()
         item.addItem("")
         item.setItemText(0, _translate("verify", '全部'))
-        # for index in range(len(source_name)):
-        #     item.addItem("")
-        #     item.setItemText(index+1, _translate("verify", source_name[index][0]))
+        for index in range(len(node_name)):
+            item.addItem("")
+            item.setItemText(index+1, _translate("verify", node_name[index][0]))
+
+        # 设置机位选择器
+        item = self.verifyPlaneNoCombox
+        _translate = QtCore.QCoreApplication.translate
+        node_name = np.array(get_position(self.conn)).tolist()
+        item.addItem("")
+        item.setItemText(0, _translate("verify", '全部'))
+        for index in range(len(node_name)):
+            item.addItem("")
+            item.setItemText(index + 1, _translate("verify", node_name[index][0]))
+
 
         # 设置时间编辑器
         self.verifyBegindateEdit.setDate(QDate.fromString("2020-08-03", 'yyyy-MM-dd'))
@@ -299,13 +282,8 @@ class MyVerify(QDialog, Ui_verify):
         self.btnAfterPage.setShortcut('right')
 
 
-        # 按钮连接功能
-        self.btnQuery.clicked.connect(self.on_query)
-        self.btnReset.clicked.connect(self.on_reset)
-        self.btnUpdate.clicked.connect(self.on_update)
-
-        self.timer_1 = QtCore.QTimer(self)
-        self.timer_1.timeout.connect(self.update_timer)
+        # 生成统计报告
+        self.btnStatistics.clicked.connect(self.createStatistics)
 
     def closeEvent(self, event):
         sys.exit(app.exec_())
@@ -382,10 +360,10 @@ class MyVerify(QDialog, Ui_verify):
             item = self.verifytableWidget.selectedItems()
             if len(item) != 0:
                 row = item[0].row()
-                comboBox = self.verifytableWidget.cellWidget(row, 7)
+                comboBox = self.verifytableWidget.cellWidget(row, 5)
                 currentIndex = comboBox.currentIndex()
 
-                comboBox.setCurrentIndex((currentIndex+1)%4)
+                comboBox.setCurrentIndex((currentIndex+1)%6)
 
     def chooseUp(self):
         if self.verifytableWidget.rowCount() != 0:
@@ -426,125 +404,38 @@ class MyVerify(QDialog, Ui_verify):
     def showImg(self, row):
         for i in range(self.verticalLayout_4.count()):
             self.verticalLayout_4.itemAt(i).widget().deleteLater()
-        temp = self.result.iloc[self.pageIndex * page_rows + row, :]
-        node_t = []
-        node_t.append(temp['id'])
-        node_t.append(temp['camera_name'])
-        node_t.append(temp['location'])
-        node_t.append(type_dir[temp['type']])
-        node_t.append(temp['timestamp'])
-        node_t.append(temp['snap'])
-
-        res1 = resultnode.Ui_nodeGifResWidget(node_t)
+        temp = self.result.iloc[self.pageIndex * 20 + row, :]
+        node = np.array(temp).tolist()
+        node[4] = node[8].date()
+        res1 = resultnode.Ui_nodeGifResWidget(node)
         wgt = QtWidgets.QWidget()
         res1.setupUi(wgt)
         self.verticalLayout_4.addWidget(wgt)
-        self.verticalLayout_4.setSizeConstraint(0)
-        # pass
-
-    def update_timer(self):
-        if self.is_update:
-            self.result = mysql_get_snap(self.conn, self.view)
-            if self.result.shape[0] != 0:
-                self.result['status'] = self.result['status'].fillna(0).astype('int')
-                self.result['date'] = self.result.apply(lambda x: x['timestamp'].strftime('%Y-%m-%d %H:%M:%S'), axis=1)
-                self.result['date_day'] = self.result.apply(lambda x: x['timestamp'].strftime('%Y-%m-%d'), axis=1)
-                self.result['date_time'] = self.result.apply(lambda x: x['timestamp'].strftime('%H:%M:%S'), axis=1)
-
-                self.result = self.result.iloc[::-1]
-
-                if self.result.shape[0] > page_rows:
-                    self.result = self.result.iloc[:page_rows, :]
-
-                if self.result.iloc[0, 0] != self.update_id_flag:
-                    self.update_id_flag = self.result.iloc[0, 0]
-                    self.pageIndex = 0
-                    self.pageIndexLast = 0
-                    self.lblTotalPage.setText('共1页')
-                    print(self.result)
-                    self.createTable()
-
-    def on_reset(self):
-        self.verifyHandleCombox.setCurrentIndex(0)
-        self.verifyLevelCombox.setCurrentIndex(0)
-        self.verifyTypeCombox.setCurrentIndex(0)
-        self.verifySourceCombox.setCurrentIndex(0)
-        self.verifyBegindateEdit.setDate(QDate.fromString("2020-08-03", 'yyyy-MM-dd'))
-        self.verifyEnddateEdit.setDate(QDate.currentDate())
-
-    def on_update(self):
-        if not self.is_update:
-            self.is_update = True
-            self.on_reset()
-            self.btnQuery.setEnabled(False)
-            self.btnReset.setEnabled(False)
-            self.btnBeforePage.setEnabled(False)
-            self.btnLastPage.setEnabled(False)
-            self.btnHomePage.setEnabled(False)
-            self.btnAfterPage.setEnabled(False)
-            self.verifySourceCombox.setEnabled(False)
-            self.verifyTypeCombox.setEnabled(False)
-            self.verifyLevelCombox.setEnabled(False)
-            self.verifyHandleCombox.setEnabled(False)
-            self.verifyBegindateEdit.setEnabled(False)
-            self.verifyEnddateEdit.setEnabled(False)
-            self.timer_1.start(1000)
-
-        else:
-            self.timer_1.stop()
-            self.result = None
-            self.createTable()
-            self.is_update = False
-            self.update_id_flag = None
-            self.btnQuery.setEnabled(True)
-            self.btnReset.setEnabled(True)
-            self.btnBeforePage.setEnabled(True)
-            self.btnLastPage.setEnabled(True)
-            self.btnHomePage.setEnabled(True)
-            self.btnAfterPage.setEnabled(True)
-            self.verifySourceCombox.setEnabled(True)
-            self.verifyTypeCombox.setEnabled(True)
-            self.verifyLevelCombox.setEnabled(True)
-            self.verifyHandleCombox.setEnabled(True)
-            self.verifyBegindateEdit.setEnabled(True)
-            self.verifyEnddateEdit.setEnabled(True)
 
     # 实时更新
     def on_save(self):
         row = self.verifytableWidget.selectedItems()[0].row()
-        self.result.iloc[row + self.pageIndex*page_rows, 7] = self.verifytableWidget.cellWidget(row, 7).currentIndex()
-        print(self.result.iloc[row + self.pageIndex*page_rows, :])
-        data_list_n = [[self.result.iloc[row + self.pageIndex*page_rows, 0], self.result.iloc[row + self.pageIndex*page_rows, 7]]]
-        mysql_update_data(self.conn, self.view, data_list_n)
+        self.result.iloc[row + self.pageIndex*20, 7] = self.verifytableWidget.cellWidget(row, 5).currentIndex()
+        data_list_n = [[self.result.iloc[row + self.pageIndex*20, 0], self.result.iloc[row + self.pageIndex*20, 7]]]
+        mysql_update_data(self.conn, data_list_n)
 
     def on_query(self):
-        source = self.verifySourceCombox.itemText(self.verifySourceCombox.currentIndex())
-        if source == "全部":
-            source = None
-        type = self.verifyTypeCombox.currentIndex() - 1
-        if type == -1:
-            type = None
-        level = self.verifyLevelCombox.currentIndex() - 1
-        if level == -1:
-            level = None
-        status = self.verifyHandleCombox.currentIndex() - 1
-        if status == -1:
-            status = None
-
+        apron = self.verifyPlaneNoCombox.itemText(self.verifyPlaneNoCombox.currentIndex())
+        if apron == "全部":
+            apron = None
+        node = self.verifyNodeCombox.itemText(self.verifyNodeCombox.currentIndex())
+        if node == "全部":
+            node = None
         data_start = self.verifyBegindateEdit.date().toPyDate()
         data_end = self.verifyEnddateEdit.date().toPyDate()
-
-        # self.result = mysql_get_snap(self.conn, self.view, source=source, type=type, level=level, status=status)#, data_start=data_start, data_end=data_end)
-        self.result = mysql_get_snap(self.conn, self.view, source=source, type=type, level=level, status=status,
-                                     data_start=data_start, data_end=data_end)
-        print(self.result)
+        checked = self.verifyStatusCombox.currentIndex()
+        self.result = mysql_get_snap(self.conn, apron=apron, nodename=node, checked=checked, data_start=data_start, data_end=data_end)
         if self.result.shape[0] != 0:
-            self.result['status'] = self.result['status'].fillna(0).astype('int')
-            self.result['date'] = self.result.apply(lambda x: x['timestamp'].strftime('%Y-%m-%d %H:%M:%S'), axis=1)
-            self.result['date_day'] = self.result.apply(lambda x: x['timestamp'].strftime('%Y-%m-%d'), axis=1)
-            self.result['date_time'] = self.result.apply(lambda x: x['timestamp'].strftime('%H:%M:%S'), axis=1)
+            self.result['checked'] = self.result['checked'].fillna(UNCHECKED_F).astype('int')
+            self.result['date'] = self.result.apply(lambda x: x['datetime'].strftime('%Y-%m-%d %H:%M:%S'), axis=1)
+            self.result['date_day'] = self.result.apply(lambda x: x['datetime'].strftime('%Y-%m-%d'), axis=1)
             self.pageIndex = 0
-            self.pageIndexLast = int((self.result.shape[0]-1) / page_rows)
+            self.pageIndexLast = int((self.result.shape[0]-1) / 20)
             self.lblTotalPage.setText('共%d页' % (self.pageIndexLast+1))
             self.createTable()
         else:
@@ -570,44 +461,30 @@ class MyVerify(QDialog, Ui_verify):
         table = self.verifytableWidget
         table.setRowCount(0)
         self.lblPageNum.setText(str(self.pageIndex+1))
-        if self.result is None:
-            return
-        for i in range(page_rows):
-            if self.pageIndex * page_rows + i > self.result.shape[0] - 1:
+        for i in range(20):
+            if self.pageIndex * 20 + i > self.result.shape[0] - 1:
                 break
-            node = self.result.iloc[self.pageIndex * page_rows + i, :]
+            node = self.result.iloc[self.pageIndex * 20 + i, :]
             ID = str(node["id"])
-            date_time = node['date_time']
-            date_day = node['date_day']
-            location = node['location']
-            source = node['camera_name']
-            type = type_dir[node['type']]
-            level = level_dir[node['level']]
-            status = node['status']
-
+            apron = node["apron"]
+            date = node["date"]
+            node_chinese = node["node_chinese"]
+            snap_addr = node["snap_addr"]
+            checked = node["checked"]
+            if np.isnan(checked):
+                checked = UNCHECKED_F
             row = table.rowCount()
             table.insertRow(row)
             item = QTableWidgetItem(ID)
-            item.setTextAlignment(QtCore.Qt.AlignHCenter | QtCore.Qt.AlignVCenter)
             table.setItem(row, 0, item)
-            item = QTableWidgetItem(date_day)
-            item.setTextAlignment(QtCore.Qt.AlignHCenter | QtCore.Qt.AlignVCenter)
+            item = QTableWidgetItem(apron)
             table.setItem(row, 1, item)
-            item = QTableWidgetItem(date_time)
-            item.setTextAlignment(QtCore.Qt.AlignHCenter | QtCore.Qt.AlignVCenter)
+            item = QTableWidgetItem(date)
             table.setItem(row, 2, item)
-            item = QTableWidgetItem(location)
-            item.setTextAlignment(QtCore.Qt.AlignHCenter | QtCore.Qt.AlignVCenter)
+            item = QTableWidgetItem(node_chinese)
             table.setItem(row, 3, item)
-            item = QTableWidgetItem(source)
-            item.setTextAlignment(QtCore.Qt.AlignHCenter | QtCore.Qt.AlignVCenter)
+            item = QTableWidgetItem(snap_addr)
             table.setItem(row, 4, item)
-            item = QTableWidgetItem(type)
-            item.setTextAlignment(QtCore.Qt.AlignHCenter | QtCore.Qt.AlignVCenter)
-            table.setItem(row, 5, item)
-            item = QTableWidgetItem(level)
-            item.setTextAlignment(QtCore.Qt.AlignHCenter | QtCore.Qt.AlignVCenter)
-            table.setItem(row, 6, item)
 
             item = QComboBox()
             _translate = QtCore.QCoreApplication.translate
@@ -616,11 +493,17 @@ class MyVerify(QDialog, Ui_verify):
             item.addItem("")
             item.addItem("")
             item.addItem("")
-            for ele in range(4):
-                item.setItemText(ele, _translate("verify", status_dir[ele]))
-            item.setCurrentIndex(status)
+            item.addItem("")
+            item.addItem("")
+            item.setItemText(CORRECT_F, _translate("verify", "正确"))
+            item.setItemText(ERROR_F, _translate("verify", "错误"))
+            item.setItemText(LOST_F, _translate("verify", "遗漏"))
+            item.setItemText(REPEAT_F, _translate("verify", "重复上报"))
+            item.setItemText(UNEXPECT_F, _translate("verify", "无计划航班"))
+            item.setItemText(UNCHECKED_F, _translate("verify", "未审核"))
+            item.setCurrentIndex(checked)
             item.currentIndexChanged.connect(self.on_save)
-            table.setCellWidget(row, 7, item)
+            table.setCellWidget(row, 5, item)
         self.verifytableWidget.selectRow(0)
         self.showImg(0)
 
@@ -714,12 +597,10 @@ class Manager:
         self.conn = None
         with open('./static/setting/config.json', 'r', encoding='utf8')as fp:
             config = json.load(fp)
-            os.system('net use Z: %s %s /user:%s' % (config["snap_root_path"], config["remote_passwd"], config["remote_user"]))
             sql_cfg = config["mysql"]
             try:
                 self.conn = pymysql.connect(host=sql_cfg['ip'], port=sql_cfg["port"], user=sql_cfg["user"],
-                                   passwd=sql_cfg["passwd"], db=sql_cfg["db"], autocommit=True)
-                self.view = sql_cfg["view"]
+                                   passwd=sql_cfg["passwd"], db=sql_cfg["db"])
                 self.login = Login(conn=self.conn)
                 with open('./static/setting/style.qss', 'r', encoding='utf-8') as f:
                     tmp = f.read()
@@ -742,7 +623,7 @@ class Manager:
 
     def move2main(self, msg):
         self.login.setWindowTitle('登录中...')
-        self.main_ui = MyVerify(conn=self.conn, view=self.view)
+        self.main_ui = MyVerify(conn=self.conn)
         with open('./static/setting/style.qss', 'r', encoding='utf-8') as f:
             tmp = f.read()
             self.main_ui.setStyleSheet(tmp)

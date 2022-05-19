@@ -14,7 +14,7 @@ class MyLabel(QtWidgets.QLabel):
 
     def setupUi(self,parent=None):
         self.gif = QMovie(self.gif_path)
-        self.gif.setScaledSize(QSize(600, 400))
+        self.gif.setScaledSize(QSize(300, 200))
         self.setMovie(self.gif)
         self.gif.start()
         # self.gif.jumpToFrame(self.gif.frameCount()-1)

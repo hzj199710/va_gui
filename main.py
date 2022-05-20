@@ -44,7 +44,7 @@ def isDay(dateTime):
 
 import time
 # 查询数据
-def mysql_get_snap(conn, apron=None, nodename=None, data_start=None, data_end=None, checked=None):
+def mysql_get_snap(conn, apron=None, table=None, nodename=None, data_start=None, data_end=None, checked=None):
     sql_where = ''
     if apron != None:
         sql_where += 'apron="%s" ' % apron
@@ -74,7 +74,7 @@ def mysql_get_snap(conn, apron=None, nodename=None, data_start=None, data_end=No
     if sql_where != '':
         sql_where = 'where ' + sql_where
 
-    sql = 'SELECT * FROM node_view %s ORDER BY `datetime` ASC, `id` ASC;' % (sql_where)
+    sql = 'SELECT * FROM %s %s ORDER BY `datetime` ASC, `id` ASC;' % (table, sql_where)
     result = pd.read_sql(sql, conn)
     return result
 
@@ -91,10 +91,10 @@ def get_position(conn):
 
 
 # 更新数据
-def mysql_update_data(conn, data_list):
+def mysql_update_data(conn, data_list, table):
     cursor = conn.cursor()
     for data in data_list:
-        sql = 'UPDATE node_event SET checked=%s WHERE id=%s' % (data[1], data[0])
+        sql = 'UPDATE %s SET checked=%s WHERE id=%s' % (table, data[1], data[0])
         cursor.execute(sql)
     conn.commit()
 
@@ -210,10 +210,12 @@ class Thread_1(QThread):
 
 
 class MyVerify(QDialog, Ui_verify):
-    def __init__(self, parent=None, conn=None):
+    def __init__(self, parent=None, conn=None, table=None, insert_table=None):
         QDialog.__init__(self, parent=parent)
         self.result = None
         self.conn = conn
+        self.table = table
+        self.insert_table = insert_table
         self.setupUi(self)
 
         # 设置热键
@@ -417,7 +419,7 @@ class MyVerify(QDialog, Ui_verify):
         row = self.verifytableWidget.selectedItems()[0].row()
         self.result.iloc[row + self.pageIndex*20, 7] = self.verifytableWidget.cellWidget(row, 5).currentIndex()
         data_list_n = [[self.result.iloc[row + self.pageIndex*20, 0], self.result.iloc[row + self.pageIndex*20, 7]]]
-        mysql_update_data(self.conn, data_list_n)
+        mysql_update_data(self.conn, data_list_n, self.insert_table)
 
     def on_query(self):
         apron = self.verifyPlaneNoCombox.itemText(self.verifyPlaneNoCombox.currentIndex())
@@ -429,7 +431,7 @@ class MyVerify(QDialog, Ui_verify):
         data_start = self.verifyBegindateEdit.date().toPyDate()
         data_end = self.verifyEnddateEdit.date().toPyDate()
         checked = self.verifyStatusCombox.currentIndex()
-        self.result = mysql_get_snap(self.conn, apron=apron, nodename=node, checked=checked, data_start=data_start, data_end=data_end)
+        self.result = mysql_get_snap(self.conn, apron=apron, table=self.table, nodename=node, checked=checked, data_start=data_start, data_end=data_end)
         if self.result.shape[0] != 0:
             self.result['checked'] = self.result['checked'].fillna(UNCHECKED_F).astype('int')
             self.result['date'] = self.result.apply(lambda x: x['datetime'].strftime('%Y-%m-%d %H:%M:%S'), axis=1)
@@ -564,7 +566,6 @@ class Login(Ui_Login, QWidget):
         self.pushButton_login.setShortcut('return')
         self.pushButton_login.clicked.connect(self.login_in)
 
-
     def login_in(self):
         name = self.lineEdit_name.text()
         passwd = self.lineEdit_password.text()
@@ -595,6 +596,8 @@ class Login(Ui_Login, QWidget):
 class Manager:
     def __init__(self):
         self.conn = None
+        self.table = None
+        self.insert_table = None
         with open('./static/setting/config.json', 'r', encoding='utf8')as fp:
             config = json.load(fp)
             sql_cfg = config["mysql"]
@@ -602,6 +605,8 @@ class Manager:
                 self.conn = pymysql.connect(host=sql_cfg['ip'], port=sql_cfg["port"], user=sql_cfg["user"],
                                    passwd=sql_cfg["passwd"], db=sql_cfg["db"])
                 self.login = Login(conn=self.conn)
+                self.table = sql_cfg['table']
+                self.insert_table = sql_cfg['insert_table']
                 with open('./static/setting/style.qss', 'r', encoding='utf-8') as f:
                     tmp = f.read()
                     self.login.setStyleSheet(tmp)
@@ -623,7 +628,7 @@ class Manager:
 
     def move2main(self, msg):
         self.login.setWindowTitle('登录中...')
-        self.main_ui = MyVerify(conn=self.conn)
+        self.main_ui = MyVerify(conn=self.conn, table=self.table, insert_table=self.insert_table)
         with open('./static/setting/style.qss', 'r', encoding='utf-8') as f:
             tmp = f.read()
             self.main_ui.setStyleSheet(tmp)

@@ -5,6 +5,8 @@
       "port": 3306,
       "user": "root",
       "passwd": "123456",
-      "db": "va"
+      "db": "va",
+      "table": "node_view",
+      "insert_table": "node_event"
     }
 }

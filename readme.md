@@ -56,7 +56,7 @@ python main.py
 
 1. main.exe文件无法运行，且报类似QtBluetooth的错误。
 
-   那是由于windows版本过低，不支持bliuetooth， 可以打包成一个个单独的小文件，再删除掉QtBluetooth.pyd文件
+   那是由于windows版本过低，不支持bluetooth， 可以打包成一个个单独的小文件，再删除掉QtBluetooth.pyd文件
 
 
 

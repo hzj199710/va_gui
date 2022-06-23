@@ -3,6 +3,7 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtCore import QSize
 from PyQt5.QtGui import QMovie
+import os
 
 class MyLabel(QtWidgets.QLabel):
     def __init__(self,path, parent=None):
@@ -23,6 +24,14 @@ class MyLabel(QtWidgets.QLabel):
 
     def enterEvent(self, mE):
         self.gif.start()
+
+
+    def mouseDoubleClickEvent(self, e):
+
+        ll = self.gif_path.split('/')
+        self.gif_path = '\\'.join(ll)
+        os.system(self.gif_path)
+        print("double clicked")
 
     # def leaveEvent(self, mE):
         # # self.gif.stop()

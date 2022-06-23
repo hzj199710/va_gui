@@ -6,7 +6,7 @@ from PyQt5.QtWidgets import QApplication, QDialog, \
 from PyQt5.Qt import pyqtSignal, QThread, QFont, QDate, QKeySequence
 from PyQt5 import QtCore
 from PyQt5.QtCore import pyqtSignal
-from PyQt5.QtGui import QIcon
+from PyQt5.QtGui import QIcon, QBrush, QColor
 from login import Ui_Login
 
 from verify import Ui_verify
@@ -18,6 +18,7 @@ import pandas as pd
 import numpy as np
 from astral import LocationInfo
 import os
+import datetime
 
 page_rows = 25
 
@@ -81,7 +82,7 @@ def mysql_get_snap(conn, view, source=None, type=None, level=None, data_start=No
     if data_end != None:
         if sql_where != '':
             sql_where += 'AND '
-        sql_where += 'timestamp <= "%s" ' % (data_end.strftime("%Y-%m-%d"))
+        sql_where += 'timestamp < "%s" ' % (data_end.strftime("%Y-%m-%d"))
 
     if status != None:
         if sql_where != '':
@@ -241,7 +242,7 @@ class MyVerify(QDialog, Ui_verify):
         self.conn = conn
         self.view = view
         self.is_update = False
-        self.update_id_flag = None
+        self.last_update_time = None
         self.setupUi(self)
 
         # 设置热键
@@ -443,26 +444,40 @@ class MyVerify(QDialog, Ui_verify):
         # pass
 
     def update_timer(self):
-        if self.is_update:
-            self.result = mysql_get_snap(self.conn, self.view)
-            if self.result.shape[0] != 0:
-                self.result['status'] = self.result['status'].fillna(0).astype('int')
-                self.result['date'] = self.result.apply(lambda x: x['timestamp'].strftime('%Y-%m-%d %H:%M:%S'), axis=1)
-                self.result['date_day'] = self.result.apply(lambda x: x['timestamp'].strftime('%Y-%m-%d'), axis=1)
-                self.result['date_time'] = self.result.apply(lambda x: x['timestamp'].strftime('%H:%M:%S'), axis=1)
+        self.result = mysql_get_snap(self.conn, self.view)
+        if self.result.shape[0] != 0:
+            self.result['status'] = self.result['status'].fillna(0).astype('int')
+            self.result['snap'] = self.result['snap'].fillna("noPic")
+            self.result['date'] = self.result.apply(lambda x: x['timestamp'].strftime('%Y-%m-%d %H:%M:%S'), axis=1)
+            self.result['date_day'] = self.result.apply(lambda x: x['timestamp'].strftime('%Y-%m-%d'), axis=1)
+            self.result['date_time'] = self.result.apply(lambda x: x['timestamp'].strftime('%H:%M:%S'), axis=1)
 
-                self.result = self.result.iloc[::-1]
+            self.result = self.result.iloc[::-1]
 
-                if self.result.shape[0] > page_rows:
-                    self.result = self.result.iloc[:page_rows, :]
+            if self.result.shape[0] > page_rows:
+                self.result = self.result.iloc[:page_rows, :]
 
-                if self.result.iloc[0, 0] != self.update_id_flag:
-                    self.update_id_flag = self.result.iloc[0, 0]
-                    self.pageIndex = 0
-                    self.pageIndexLast = 0
-                    self.lblTotalPage.setText('共1页')
-                    print(self.result)
-                    self.createTable()
+            red_row = 0
+            if self.last_update_time is None:
+                red_row = 0
+            elif self.result.iloc[0, 3] > self.last_update_time:
+                for i in range(self.result.shape[0]):
+                    if self.result.iloc[i, 3] > self.last_update_time:
+                        red_row += 1
+                    else:
+                        break
+            else:
+                return
+
+            print(red_row)
+            print(self.result.iloc[0, 3])
+            self.last_update_time = self.result.iloc[0, 3]
+            self.pageIndex = 0
+            self.pageIndexLast = 0
+            self.lblTotalPage.setText('共1页')
+            print(self.result)
+            self.createTable(red_row=red_row)
+            self.verifytableWidget.selectRow(0)
 
     def on_reset(self):
         self.verifyHandleCombox.setCurrentIndex(0)
@@ -495,7 +510,7 @@ class MyVerify(QDialog, Ui_verify):
             self.result = None
             self.createTable()
             self.is_update = False
-            self.update_id_flag = None
+            self.last_update_time = None
             self.btnQuery.setEnabled(True)
             self.btnReset.setEnabled(True)
             self.btnBeforePage.setEnabled(True)
@@ -533,6 +548,7 @@ class MyVerify(QDialog, Ui_verify):
 
         data_start = self.verifyBegindateEdit.date().toPyDate()
         data_end = self.verifyEnddateEdit.date().toPyDate()
+        data_end += datetime.timedelta(days=1)
 
         # self.result = mysql_get_snap(self.conn, self.view, source=source, type=type, level=level, status=status)#, data_start=data_start, data_end=data_end)
         self.result = mysql_get_snap(self.conn, self.view, source=source, type=type, level=level, status=status,
@@ -540,6 +556,7 @@ class MyVerify(QDialog, Ui_verify):
         print(self.result)
         if self.result.shape[0] != 0:
             self.result['status'] = self.result['status'].fillna(0).astype('int')
+            self.result['snap'] = self.result['snap'].fillna("noPic")
             self.result['date'] = self.result.apply(lambda x: x['timestamp'].strftime('%Y-%m-%d %H:%M:%S'), axis=1)
             self.result['date_day'] = self.result.apply(lambda x: x['timestamp'].strftime('%Y-%m-%d'), axis=1)
             self.result['date_time'] = self.result.apply(lambda x: x['timestamp'].strftime('%H:%M:%S'), axis=1)
@@ -566,13 +583,19 @@ class MyVerify(QDialog, Ui_verify):
             self.msg.setStyleSheet("background: #182B51;\n")
             self.msg.show()
 
-    def createTable(self):
+    def createTable(self, red_row=0):
         table = self.verifytableWidget
         table.setRowCount(0)
         self.lblPageNum.setText(str(self.pageIndex+1))
         if self.result is None:
             return
+
+        color = None
         for i in range(page_rows):
+            if i < red_row:
+                color = QBrush(QColor(255, 0, 0))
+            else:
+                color = QBrush(QColor(255, 255, 255))
             if self.pageIndex * page_rows + i > self.result.shape[0] - 1:
                 break
             node = self.result.iloc[self.pageIndex * page_rows + i, :]
@@ -589,24 +612,31 @@ class MyVerify(QDialog, Ui_verify):
             table.insertRow(row)
             item = QTableWidgetItem(ID)
             item.setTextAlignment(QtCore.Qt.AlignHCenter | QtCore.Qt.AlignVCenter)
+            item.setForeground(color)
             table.setItem(row, 0, item)
             item = QTableWidgetItem(date_day)
             item.setTextAlignment(QtCore.Qt.AlignHCenter | QtCore.Qt.AlignVCenter)
+            item.setForeground(color)
             table.setItem(row, 1, item)
             item = QTableWidgetItem(date_time)
             item.setTextAlignment(QtCore.Qt.AlignHCenter | QtCore.Qt.AlignVCenter)
+            item.setForeground(color)
             table.setItem(row, 2, item)
             item = QTableWidgetItem(location)
             item.setTextAlignment(QtCore.Qt.AlignHCenter | QtCore.Qt.AlignVCenter)
+            item.setForeground(color)
             table.setItem(row, 3, item)
             item = QTableWidgetItem(source)
             item.setTextAlignment(QtCore.Qt.AlignHCenter | QtCore.Qt.AlignVCenter)
+            item.setForeground(color)
             table.setItem(row, 4, item)
             item = QTableWidgetItem(type)
             item.setTextAlignment(QtCore.Qt.AlignHCenter | QtCore.Qt.AlignVCenter)
+            item.setForeground(color)
             table.setItem(row, 5, item)
             item = QTableWidgetItem(level)
             item.setTextAlignment(QtCore.Qt.AlignHCenter | QtCore.Qt.AlignVCenter)
+            item.setForeground(color)
             table.setItem(row, 6, item)
 
             item = QComboBox()

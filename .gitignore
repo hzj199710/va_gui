@@ -7,4 +7,5 @@ build/
 *.7z
 *.zip
 *.spec
+*.html
 dist/
